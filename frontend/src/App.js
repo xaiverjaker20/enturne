@@ -19,7 +19,7 @@ function App() {
 
     // Función para obtener los turnos desde el servidor
     const obtenerTurnos = () => {
-        axios.get("https://enturne-production.up.railway.app/registrar/turnos")
+        axios.get("https://enturne-production.up.railway.app/turnos")
             .then(response => setTurnos(response.data))
             .catch(error => alert("Error al obtener turnos"));
     };
