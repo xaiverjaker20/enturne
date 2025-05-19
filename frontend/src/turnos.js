@@ -5,7 +5,7 @@ function Turnos() {
     const [turnos, setTurnos] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/turnos")
+        axios.get("enturne-production.up.railway.app/turnos")
             .then(response => setTurnos(response.data))
             .catch(error => alert("Error al obtener turnos"));
     }, []);
