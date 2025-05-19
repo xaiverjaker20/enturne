@@ -9,7 +9,7 @@ function App() {
 
     // Función para registrar un conductor
     const registrarConductor = () => {
-        axios.post("http://localhost:3001/registrar", { nombre, placa })
+        axios.post("https://enturne-production.up.railway.app/registrar", { nombre, placa })
             .then(response => {
                 alert(response.data.mensaje);
                 obtenerTurnos(); // Actualizar turnos después de registrar
@@ -19,7 +19,7 @@ function App() {
 
     // Función para obtener los turnos desde el servidor
     const obtenerTurnos = () => {
-        axios.get("http://localhost:3001/turnos")
+        axios.get("https://enturne-production.up.railway.app/registrar/turnos")
             .then(response => setTurnos(response.data))
             .catch(error => alert("Error al obtener turnos"));
     };
