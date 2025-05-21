@@ -58,8 +58,8 @@ app.post('/registrar', (req, res) => {
     });
 });
 
-// Iniciar el servidor en el puerto 3306
-const PORT = 3306;
+// Iniciar el servidor en el puerto 3001
+const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://railway:${PORT}`);
 });
