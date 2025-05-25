@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise'; // <-- usa la versión basada en promesas
 
 const app = express();
 
@@ -8,58 +8,50 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Configuración de la conexión a MySQL
-const db = mysql.createConnection({
-    host: 'shortline.proxy.rlwy.net', 
+// Configuración del pool de conexiones
+const pool = mysql.createPool({
+    host: 'shortline.proxy.rlwy.net',
     user: 'root',
     password: 'cUlGjxXYaJmNTynxeURdxXjDcJmGRpOF',
     database: 'railway',
-    port: 14150
-
-});
-
-// Conectar a la base de datos
-db.connect(err => {
-    if (err) {
-        console.error('Error al conectar a la base de datos:', err);
-        return;
-    }
-    console.log('Conexión exitosa a la base de datos MySQL');
+    port: 14150,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
 // Ruta para obtener conductores
-app.get('/turnos', (req, res) => {
-    const query = 'SELECT * FROM conductores';
-    db.query(query, (err, results) => {
-        if (err) {
-            console.error('Error al obtener conductores:', err);
-            return res.status(500).json({ mensaje: 'Error al obtener conductores' });
-        }
-        res.json(results);
-    });
+app.get('/turnos', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM conductores');
+        res.json(rows);
+    } catch (err) {
+        console.error('Error al obtener conductores:', err);
+        res.status(500).json({ mensaje: 'Error al obtener conductores' });
+    }
 });
 
 // Ruta para registrar un conductor
-app.post('/registrar', (req, res) => {
+app.post('/registrar', async (req, res) => {
     const { nombre, placa } = req.body;
 
     if (!nombre || !placa) {
         return res.status(400).json({ mensaje: 'Nombre y placa son requeridos' });
     }
 
-    const query = 'INSERT INTO conductores (nombre, placa, hora_llegada) VALUES (?, ?, ?)';
-    const horaLlegada = new Date(); // Hora actual
-    db.query(query, [nombre, placa, horaLlegada], (err, result) => {
-        if (err) {
-            console.error('Error al registrar conductor:', err);
-            return res.status(500).json({ mensaje: 'Error al registrar conductor' });
-        }
+    try {
+        const horaLlegada = new Date(); // Hora actual
+        const query = 'INSERT INTO conductores (nombre, placa, hora_llegada) VALUES (?, ?, ?)';
+        await pool.query(query, [nombre, placa, horaLlegada]);
         console.log(`Conductor registrado: Nombre=${nombre}, Placa=${placa}`);
         res.json({ mensaje: 'Conductor registrado exitosamente' });
-    });
+    } catch (err) {
+        console.error('Error al registrar conductor:', err);
+        res.status(500).json({ mensaje: 'Error al registrar conductor' });
+    }
 });
 
-// Iniciar el servidor en el puerto 3001
+// Iniciar el servidor
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://railway:${PORT}`);
