@@ -41,7 +41,7 @@ app.post('/registrar', async (req, res) => {
 
     try {
         const horaLlegada = new Date(); // Hora actual
-        const query = 'INSERT INTO conductores (nombre, placa, cedula, hora_llegada) VALUES (?, ?, ?)';
+        const query = 'INSERT INTO conductores (nombre, placa, cedula, hora_llegada) VALUES (?, ?, ?, ?)';
         await pool.query(query, [nombre, placa, cedula, horaLlegada]);
         console.log(`Conductor registrado: Nombre=${nombre}, Placa=${placa}, Cedula=${cedula}`);
         res.json({ mensaje: 'Conductor registrado exitosamente' });
