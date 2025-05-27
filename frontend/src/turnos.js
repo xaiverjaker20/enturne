@@ -19,6 +19,7 @@ function Turnos() {
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Placa</th>
+                        <th>Cedula</th>
                         <th>Hora de Llegada</th>
                     </tr>
                 </thead>
@@ -28,6 +29,7 @@ function Turnos() {
                             <td>{conductor.id}</td>
                             <td>{conductor.nombre}</td>
                             <td>{conductor.placa}</td>
+                            <td>{conductor.cedula}</td>
                             <td>{new Date(conductor.hora_llegada).toLocaleString()}</td>
                         </tr>
                     ))}

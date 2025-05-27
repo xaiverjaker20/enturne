@@ -33,17 +33,17 @@ app.get('/turnos', async (req, res) => {
 
 // Ruta para registrar un conductor
 app.post('/registrar', async (req, res) => {
-    const { nombre, placa } = req.body;
+    const { nombre, placa, cedula } = req.body;
 
-    if (!nombre || !placa) {
-        return res.status(400).json({ mensaje: 'Nombre y placa son requeridos' });
+    if (!nombre || !placa || !cedula) {
+        return res.status(400).json({ mensaje: 'Nombre, placa y cedula son requeridos' });
     }
 
     try {
         const horaLlegada = new Date(); // Hora actual
-        const query = 'INSERT INTO conductores (nombre, placa, hora_llegada) VALUES (?, ?, ?)';
-        await pool.query(query, [nombre, placa, horaLlegada]);
-        console.log(`Conductor registrado: Nombre=${nombre}, Placa=${placa}`);
+        const query = 'INSERT INTO conductores (nombre, placa, cedula, hora_llegada) VALUES (?, ?, ?)';
+        await pool.query(query, [nombre, placa, cedula, horaLlegada]);
+        console.log(`Conductor registrado: Nombre=${nombre}, Placa=${placa}, Cedula=${cedula}`);
         res.json({ mensaje: 'Conductor registrado exitosamente' });
     } catch (err) {
         console.error('Error al registrar conductor:', err);

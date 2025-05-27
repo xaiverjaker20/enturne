@@ -4,12 +4,13 @@ import axios from "axios";
 function App() {
     const [nombre, setNombre] = useState("");
     const [placa, setPlaca] = useState("");
+    const [cedula, setCedula] = useState("");
     const [turnos, setTurnos] = useState([]);
     const [mostrarTurnos, setMostrarTurnos] = useState(false);
 
     // Función para registrar un conductor
     const registrarConductor = () => {
-        axios.post("https://enturne-production.up.railway.app/registrar", { nombre, placa })
+        axios.post("https://enturne-production.up.railway.app/registrar", { nombre, placa, cedula })
             .then(response => {
                 alert(response.data.mensaje);
                 obtenerTurnos(); // Actualizar turnos después de registrar
@@ -44,6 +45,12 @@ function App() {
                 value={placa}
                 onChange={e => setPlaca(e.target.value)}
             />
+            <input
+                type="text"
+                placeholder="Cedula"
+                value={cedula}
+                onChange={e => setCedula(e.target.value)}
+            />
             <button onClick={registrarConductor}>Registrar</button>
 
             <hr />
@@ -59,6 +66,7 @@ function App() {
                             <th>ID</th>
                             <th>Nombre</th>
                             <th>Placa</th>
+                            <th>Cedula</th>
                             <th>Hora de Llegada</th>
                         </tr>
                     </thead>
@@ -67,6 +75,7 @@ function App() {
                             <tr key={index}>
                                 <td>{conductor.id}</td>
                                 <td>{conductor.nombre}</td>
+                                <td>{conductor.cedula}</td>
                                 <td>{conductor.placa}</td>
                                 <td>{new Date(conductor.hora_llegada).toLocaleString()}</td>
                             </tr>
