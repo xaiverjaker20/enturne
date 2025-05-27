@@ -39,18 +39,20 @@ function App() {
                 value={nombre}
                 onChange={e => setNombre(e.target.value)}
             />
+           <input
+                type="text"
+                placeholder="Cedula"
+                value={cedula}
+                onChange={e => setCedula(e.target.value)}
+            />
+                    
             <input
                 type="text"
                 placeholder="Placa"
                 value={placa}
                 onChange={e => setPlaca(e.target.value)}
             />
-            <input
-                type="text"
-                placeholder="Cedula"
-                value={cedula}
-                onChange={e => setCedula(e.target.value)}
-            />
+            
             <button onClick={registrarConductor}>Registrar</button>
 
             <hr />
@@ -65,8 +67,8 @@ function App() {
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Placa</th>
                             <th>Cedula</th>
+                            <th>Placa</th>
                             <th>Hora de Llegada</th>
                         </tr>
                     </thead>
